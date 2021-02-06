@@ -14,4 +14,4 @@ COPY . .
 
 EXPOSE $PORT
 
-CMD yarn dev -h $HOST
+CMD yarn dev -H $HOST
