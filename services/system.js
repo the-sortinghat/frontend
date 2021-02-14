@@ -2,6 +2,14 @@ function parseData(data) {
   // parsing data into a valid object
 
   return {
+    name: 'InterSCity',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing.',
+    nonFunctionalRequirements: [
+      'Cloud-native',
+      'Interoperability',
+      'Adaptation',
+      'Evolvability',
+    ],
     modules: [
       {
         id: 1,
@@ -28,11 +36,10 @@ function parseData(data) {
   }
 }
 
-async function getSystemData(systemId) {
+function getSystemData(systemId) {
   // fetch from external source data
-  await new Promise((resolve) => setTimeout(resolve, 2000))
-  const systemData = parseData({})
-  return systemData
+  const parsedData = parseData({})
+  return new Promise((resolve) => resolve(parsedData))
 }
 
 export default getSystemData
