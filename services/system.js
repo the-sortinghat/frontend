@@ -14,23 +14,28 @@ function parseData(data) {
       {
         id: 1,
         name: 'Actuator Controller',
-        responsibility: 'Lorem ipsum dolor sit amet, consectetur adipiscing.',
-        numberOfDatabases: 1,
-        numberOfServices: 1,
-        operations: ['GET /actuator/commands', 'POST /actuator/commands'],
       },
       {
         id: 2,
         name: 'Data Collector',
-        responsibility: 'Lorem ipsum dolor sit amet, consectetur adipiscing.',
-        numberOfDatabases: 2,
-        numberOfServices: 1,
-        operations: [
-          'POST /collector/resources/data',
-          'POST /collector/resources/{uuid}/data',
-          'POST /collector/resources/data/last',
-          'POST /collector/resources/{uuid}/data/last',
-        ],
+      },
+    ],
+    metrics: [
+      {
+        metric: 'services per module',
+        measure: { min: 0, max: 5, value: 1 },
+      },
+      {
+        metric: 'modules sharing DB',
+        measure: { min: 0, max: 8, value: 0 },
+      },
+      {
+        metric: 'synchronous coupling level',
+        measure: { min: 0, max: 10, value: 3 },
+      },
+      {
+        metric: 'asynchronous coupling level',
+        measure: { min: 0, max: 9, value: 6 },
       },
     ],
   }
