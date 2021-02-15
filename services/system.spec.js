@@ -3,7 +3,7 @@ import { getSystemData } from '@/services'
 describe('getSystemData function', () => {
   let systemData
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     systemData = await getSystemData('1')
   })
 
