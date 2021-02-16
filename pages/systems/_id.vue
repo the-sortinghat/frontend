@@ -1,5 +1,5 @@
 <template>
-  <div class="container flex flex-col">
+  <div v-if="systemLoaded" class="container flex flex-col">
     <h1 class="text-xl font-bold">{{ system.name }}</h1>
     <div class="flex flex-col lg:flex-row lg:w-1/2 lg:justify-between">
       <div class="card">
@@ -51,18 +51,12 @@ export default {
       return this.$route.params.id
     },
 
-    system() {
-      const defaultSys = {
-        name: '',
-        description: '',
-        nonFunctionalRequirements: [],
-        modules: [],
-        metrics: [
-          { metric: '', measure: { min: null, max: null, value: null } },
-        ],
-      }
+    systemLoaded() {
+      return this.sys !== undefined
+    },
 
-      return this.sys || defaultSys
+    system() {
+      return this.sys
     },
   },
 
