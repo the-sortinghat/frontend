@@ -39,45 +39,35 @@
 </template>
 
 <script>
+import { getSystemData } from '@/services'
+
 export default {
+  data: () => ({
+    sys: undefined,
+  }),
+
   computed: {
     systemId() {
       return this.$route.params.id
     },
 
     system() {
-      return {
-        id: this.systemId,
-        name: 'InterSCity',
-        description: 'foo bar baz',
-        nonFunctionalRequirements: ['foo', 'bar', 'baz'],
-        modules: [
-          { id: 1, name: 'module 1' },
-          { id: 2, name: 'module 2' },
-          { id: 3, name: 'module 3' },
-          { id: 4, name: 'module 4' },
-          { id: 5, name: 'module 5' },
-        ],
+      const defaultSys = {
+        name: '',
+        description: '',
+        nonFunctionalRequirements: [],
+        modules: [],
         metrics: [
-          {
-            metric: 'services per module',
-            measure: { min: 0, max: 5, value: 1 },
-          },
-          {
-            metric: 'modules sharing DB',
-            measure: { min: 0, max: 8, value: 0 },
-          },
-          {
-            metric: 'synchronous coupling level',
-            measure: { min: 0, max: 10, value: 3 },
-          },
-          {
-            metric: 'asynchronous coupling level',
-            measure: { min: 0, max: 9, value: 6 },
-          },
+          { metric: '', measure: { min: null, max: null, value: null } },
         ],
       }
+
+      return this.sys || defaultSys
     },
+  },
+
+  async created() {
+    this.sys = await getSystemData(this.systemId)
   },
 
   methods: {
