@@ -67,34 +67,30 @@ export default {
     metricWidth() {
       return `width: ${this.width}px;`
     },
-    boxWidth() {
-      return (measure) => {
-        const { min, max } = measure
-        const w = this.width / (max - min)
-        return `width: ${w}px; height: 100%`
-      }
-    },
-    boxStyleClasses() {
-      return (index, total, value) => {
-        let classes = ''
-
-        if (index <= value) {
-          classes += 'bg-purple-500 '
-        }
-
-        if (index < total) {
-          classes += 'border-r border-black'
-        }
-
-        return classes
-      }
-    },
   },
   methods: {
     numberOfBoxes(index) {
       const metric = this.metrics[index]
       const { min, max } = metric.measure
       return max - min
+    },
+    boxWidth(measure) {
+      const { min, max } = measure
+      const w = this.width / (max - min)
+      return `width: ${w}px; height: 100%`
+    },
+    boxStyleClasses(index, total, value) {
+      let classes = ''
+
+      if (index <= value) {
+        classes += 'bg-purple-500 '
+      }
+
+      if (index < total) {
+        classes += 'border-r border-black'
+      }
+
+      return classes
     },
   },
 }
