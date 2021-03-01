@@ -1,4 +1,4 @@
-import { getSystemData } from '@/services'
+import getSystemData from './index'
 
 describe('getSystemData function', () => {
   let systemData
