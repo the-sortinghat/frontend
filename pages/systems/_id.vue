@@ -39,8 +39,6 @@
 </template>
 
 <script>
-import { getSystemData } from '@/services'
-
 export default {
   data: () => ({
     sys: undefined,
@@ -61,7 +59,7 @@ export default {
   },
 
   async created() {
-    this.sys = await getSystemData(this.systemId)
+    this.sys = await this.$getSystemData(this.systemId)
   },
 
   methods: {
