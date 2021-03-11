@@ -1,15 +1,27 @@
 <template>
-  <svg style="width: 100%; height: 100%; border: 1px solid #000"></svg>
+  <div class="w-full h-full">
+    <svg class="w-full h-full border"></svg>
+    <Subtitle :items="subtitles" />
+  </div>
 </template>
 
 <script>
+import Subtitle from '@/components/Subtitle.vue'
+
 export default {
+  components: {
+    Subtitle,
+  },
   props: {
     nodes: {
       type: Array,
       required: true,
     },
     links: {
+      type: Array,
+      required: true,
+    },
+    subtitles: {
       type: Array,
       required: true,
     },
@@ -20,7 +32,7 @@ export default {
       links: this.links,
       width: this.$el.clientWidth,
       height: this.$el.clientHeight,
-      container: this.$el,
+      container: this.$el.querySelector('svg'),
     })
   },
 }
