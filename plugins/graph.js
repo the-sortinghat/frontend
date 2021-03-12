@@ -32,6 +32,7 @@ function generateGraph(payload) {
     .append('path')
     .attr('class', (d) => 'link')
     .attr('stroke-width', '1')
+    .attr('stroke-dasharray', (d) => (d.type === 'async' ? '5,5' : undefined))
 
   graph.selectAll('circle').remove()
   graph
@@ -106,7 +107,10 @@ function generateGraph(payload) {
       event.subject.fy = null
     })
 
-  graph.selectAll('circle').call(drag)
+  graph
+    .selectAll('circle')
+    .call(drag)
+    .on('click', (event, d) => d.onModuleClick())
 }
 
 export default ({ _ }, inject) => {
