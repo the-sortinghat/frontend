@@ -13,11 +13,23 @@ function parseData(data) {
     modules: [
       {
         id: 1,
-        name: 'Actuator Controller',
+        name: 'Resource Discovery',
       },
       {
         id: 2,
         name: 'Data Collector',
+      },
+      {
+        id: 3,
+        name: 'Resource Catolog',
+      },
+      {
+        id: 4,
+        name: 'Actuator Controller',
+      },
+      {
+        id: 5,
+        name: 'Resource Adaptor',
       },
     ],
     metrics: [
