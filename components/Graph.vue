@@ -16,10 +16,29 @@ export default {
     nodes: {
       type: Array,
       required: true,
+      default: () => [],
+      validator: (value) => {
+        const requiredKeys = ['id', 'name']
+        return value.every(
+          (val) =>
+            JSON.stringify(requiredKeys.sort()) ===
+            JSON.stringify(Object.keys(val).sort())
+        )
+      },
     },
     links: {
       type: Array,
       required: true,
+      default: () => [],
+      validator: (value) => {
+        const requiredKeys = ['source', 'target', 'type']
+        return value.every(
+          (val) =>
+            JSON.stringify(requiredKeys.sort()) ===
+              JSON.stringify(Object.keys(val).sort()) &&
+            (val.type === 'sync' || val.type === 'async')
+        )
+      },
     },
     subtitles: {
       type: Array,
