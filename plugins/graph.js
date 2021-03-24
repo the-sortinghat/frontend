@@ -1,47 +1,49 @@
 import * as d3 from 'd3'
 
-function buildSvgContainer(container) {
+function getSvgContainer(container) {
   const svg = d3.select(container)
   return svg
 }
 
-function buildGraphGroup(svgContainer) {
-  const graph = svgContainer.append('g')
-  return graph
-}
+function buildGraphLinks(svgContainer, links) {
+  const color = d3.scaleOrdinal(['#000000'])
 
-function buildGraphLinks(graph, links) {
-  graph.selectAll('path').data(links).exit().remove()
-
-  graph
+  return svgContainer
+    .append('g')
+    .attr('fill', 'none')
+    .attr('stroke-width', 1.5)
     .selectAll('path')
     .data(links)
-    .enter()
-    .append('path')
-    .attr('class', (d) => 'link')
-    .attr('stroke-width', '1')
+    .join('path')
+    .attr('stroke', (d) => color(d.type))
     .attr('stroke-dasharray', (d) => (d.type === 'async' ? '5,5' : undefined))
+    .attr('marker-end', (d) => `url(#arrow-end)`)
 }
 
-function buildGraphNodes(graph, nodes) {
+function buildGraphNodes(svgContainer, nodes) {
   const nodeRadius = 18
 
-  graph.selectAll('circle').remove()
-  graph
-    .selectAll('circle')
+  const node = svgContainer
+    .append('g')
+    .attr('fill', 'currentColor')
+    .attr('stroke-linecap', 'round')
+    .attr('stroke-linejoin', 'round')
+    .selectAll('g')
     .data(nodes)
-    .enter()
+    .join('g')
+
+  node
     .append('circle')
+    .attr('class', 'node')
+    .attr('stroke', 'white')
+    .attr('stroke-width', 1.5)
     .attr('r', nodeRadius)
-    .attr('class', (d) => 'node')
+
+  return node
 }
 
-function buildGraphNodeLabels(graph, nodes) {
-  graph.selectAll('text').remove()
-  graph
-    .selectAll('text')
-    .data(nodes)
-    .enter()
+function buildGraphNodeLabels(node) {
+  node
     .append('text')
     .attr('x', 0)
     .attr('y', -20)
@@ -51,104 +53,109 @@ function buildGraphNodeLabels(graph, nodes) {
 
 function buildGraphLinkMarkers(svgContainer) {
   svgContainer
-    .append('svg:defs')
+    .append('defs')
     .selectAll('marker')
     .data(['end'])
-    .enter()
-    .append('svg:marker')
-    .attr('id', String)
+    .join('marker')
+    .attr('id', 'arrow-end')
     .attr('viewBox', '0 -5 10 10')
     .attr('refX', 25)
     .attr('refY', 0)
-    .attr('markerWidth', 12)
-    .attr('markerHeight', 12)
+    .attr('markerWidth', 8)
+    .attr('markerHeight', 8)
     .attr('orient', 'auto')
-    .append('svg:path')
+    .append('path')
+    .attr('fill', '#000')
     .attr('d', 'M0,-5L10,0L0,5')
-
-  svgContainer
-    .selectAll('g')
-    .selectAll('path')
-    .attr('marker-end', (d) => {
-      return 'url(#end)'
-    })
 }
 
 function setGraphSimulationForces(nodes, links, width, height) {
   const simulation = d3
-    .forceSimulation()
-    .nodes(nodes)
-    .force('charge', d3.forceManyBody())
+    .forceSimulation(nodes)
+    .force(
+      'link',
+      d3.forceLink(links).id((d) => d.id)
+    )
     .force('center', d3.forceCenter(width / 2, height / 2))
-    .force('link', d3.forceLink(links).distance(200))
+    .force('charge', d3.forceManyBody().strength(-5000))
+    .force('x', d3.forceX())
+    .force('y', d3.forceY())
 
   return simulation
 }
 
-function setGraphItemsTransation(graph, simulation) {
-  simulation.on('tick', function () {
-    const transform = (d) => {
-      return 'translate(' + d.x + ',' + d.y + ')'
-    }
+function setGraphItemsTranslation(simulation, node, link) {
+  simulation.on('tick', () => {
+    link.attr('d', (d) => {
+      if (d.isCurved) {
+        const r = Math.hypot(d.target.x - d.source.x, d.target.y - d.source.y)
+        return `
+          M${d.source.x},${d.source.y}
+          A${r},${r} 0 0,1 ${d.target.x},${d.target.y}
+        `
+      }
 
-    const link = (d) => {
-      return (
-        'M' +
-        d.source.x +
-        ',' +
-        d.source.y +
-        ' L' +
-        d.target.x +
-        ',' +
-        d.target.y
-      )
-    }
+      return `M${d.source.x},${d.source.y} L${d.target.x},${d.target.y}`
+    })
 
-    graph.selectAll('path').attr('d', link)
-    graph.selectAll('circle').attr('transform', transform)
-    graph.selectAll('text').attr('transform', transform)
+    node.attr('transform', (d) => `translate(${d.x},${d.y})`)
   })
 }
 
-function setGraphNodesMovementAndClick(graph, simulation) {
+function setGraphNodesMovementAndClick(node, simulation) {
   const drag = d3
     .drag()
-    .on('start', function (event) {
+    .on('start', (event) => {
       if (!event.active) simulation.alphaTarget(0.3).restart()
       event.subject.fx = event.subject.x
       event.subject.fy = event.subject.y
     })
-    .on('drag', function (event) {
+    .on('drag', (event) => {
       event.subject.fx = event.x
       event.subject.fy = event.y
     })
-    .on('end', function (event) {
+    .on('end', (event) => {
       if (!event.active) simulation.alphaTarget(0)
       event.subject.fx = null
       event.subject.fy = null
     })
 
-  graph
-    .selectAll('circle')
-    .call(drag)
-    .on('click', (_, d) => d.onModuleClick())
+  node.call(drag).on('click', (_, d) => d.onModuleClick())
+}
+
+function includeCurvedAttributeForLinks(links) {
+  const isCurvedLinks = links.reduce((acc, value, index) => {
+    const linkSource = value.source
+    const linkTarget = value.target
+
+    return acc.concat([
+      links.some((item, i) => {
+        if (index === i) return false
+
+        const { source, target } = item
+        return linkSource === target && linkTarget === source
+      }),
+    ])
+  }, [])
+
+  return links.map((link, index) => ({
+    ...link,
+    isCurved: isCurvedLinks[index],
+  }))
 }
 
 function generateGraph(payload) {
   const { nodes, links, width, height, container } = payload
 
-  const svg = buildSvgContainer(container)
-  const graph = buildGraphGroup(svg)
-
-  buildGraphLinks(graph, links)
+  const svg = getSvgContainer(container)
+  const newLinks = includeCurvedAttributeForLinks(links)
+  const drawnLinks = buildGraphLinks(svg, newLinks)
+  const drawnNodes = buildGraphNodes(svg, nodes)
+  const simulation = setGraphSimulationForces(nodes, newLinks, width, height)
   buildGraphLinkMarkers(svg)
-  buildGraphNodes(graph, nodes)
-  buildGraphNodeLabels(graph, nodes)
-
-  const simulation = setGraphSimulationForces(nodes, links, width, height)
-
-  setGraphItemsTransation(graph, simulation)
-  setGraphNodesMovementAndClick(graph, simulation)
+  buildGraphNodeLabels(drawnNodes)
+  setGraphItemsTranslation(simulation, drawnNodes, drawnLinks)
+  setGraphNodesMovementAndClick(drawnNodes, simulation)
 }
 
 export default ({ _ }, inject) => {
