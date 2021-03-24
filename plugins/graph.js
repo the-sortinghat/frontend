@@ -74,13 +74,10 @@ function setGraphSimulationForces(nodes, links, width, height) {
     .forceSimulation(nodes)
     .force(
       'link',
-      d3
-        .forceLink(links)
-        .id((d) => d.id)
-        .distance(200)
+      d3.forceLink(links).id((d) => d.id)
     )
     .force('center', d3.forceCenter(width / 2, height / 2))
-    .force('charge', d3.forceManyBody())
+    .force('charge', d3.forceManyBody().strength(-5000))
     .force('x', d3.forceX())
     .force('y', d3.forceY())
 
