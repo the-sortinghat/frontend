@@ -1,6 +1,7 @@
 import getSystemData from './system'
-// import {  } from './module;
+import getModuleData from './module'
 
-export default ({ app }, inject) => {
+export default (_, inject) => {
   inject('getSystemData', (id) => getSystemData(id))
+  inject('getModuleData', (id) => getModuleData(id))
 }
