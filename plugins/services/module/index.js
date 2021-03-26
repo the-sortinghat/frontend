@@ -10,8 +10,20 @@ function parseData(data) {
         name: 'Data Collector',
       },
     ],
-    numberOfDatabases: 2,
-    numberOfOperations: 4,
+    metrics: [
+      {
+        metric: 'Number of Services',
+        measure: { min: 0, max: 3, value: 1 },
+      },
+      {
+        metric: 'Number of Databases',
+        measure: { min: 0, max: 2, value: 2 },
+      },
+      {
+        metric: 'Number of Operations',
+        measure: { min: 0, max: 5, value: 4 },
+      },
+    ],
   }
 }
 

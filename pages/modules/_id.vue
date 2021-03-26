@@ -54,6 +54,9 @@ export default {
     services() {
       return this.module.services
     },
+    metrics() {
+      return this.module.metrics
+    },
     nodes() {
       return this.graphData.nodes
     },
@@ -62,22 +65,6 @@ export default {
     },
     subtitles() {
       return this.graphData.subtitles
-    },
-    metrics() {
-      return [
-        {
-          metric: 'Number of Services',
-          measure: { min: 0, max: 3, value: this.services.length },
-        },
-        {
-          metric: 'Number of Databases',
-          measure: { min: 0, max: 2, value: this.module.numberOfDatabases },
-        },
-        {
-          metric: 'Number of Operations',
-          measure: { min: 0, max: 5, value: this.module.numberOfOperations },
-        },
-      ]
     },
   },
   async created() {
