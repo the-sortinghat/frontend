@@ -88,7 +88,7 @@ export default {
     this.sys = await this.$getSystemData(this.systemId)
     this.graphData.nodes = this.sys.modules.map((m) => ({
       ...m,
-      onModuleClick: () => this.goToModulesPage(m.id),
+      onClick: () => this.goToModulesPage(m.id),
     }))
 
     // fake links to test if graph component is correct
