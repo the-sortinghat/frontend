@@ -8,7 +8,7 @@ describe('getModuleData function', () => {
   })
 
   it('returns a module data with essential properties', () => {
-    const keys = ['name', 'responsability', 'services', 'metrics']
+    const keys = ['name', 'responsibility', 'services', 'metrics']
 
     expect(Object.keys(moduleData).sort()).toMatchObject(keys.sort())
   })

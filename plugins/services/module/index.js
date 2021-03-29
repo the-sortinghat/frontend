@@ -3,7 +3,7 @@ function parseData(data) {
 
   return {
     name: 'Data Collector',
-    responsability: 'Lorem ipsum dolor sit amet, consectetur adipiscing.',
+    responsibility: 'Lorem ipsum dolor sit amet, consectetur adipiscing.',
     services: [
       {
         id: 1,

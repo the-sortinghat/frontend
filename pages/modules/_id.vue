@@ -3,8 +3,8 @@
     <h1 class="text-xl font-bold">{{ module.name }}</h1>
     <div class="flex flex-col lg:flex-row lg:w-1/2 lg:justify-between">
       <div class="card">
-        <h2 class="text-lg">Responsability:</h2>
-        <p>{{ module.responsability }}</p>
+        <h2 class="text-lg">Responsibility:</h2>
+        <p>{{ module.responsibility }}</p>
       </div>
     </div>
     <div class="flex flex-col lg:flex-row lg:w-full lg:justify-between">
