@@ -23,6 +23,10 @@ function parseData(data) {
         metric: 'Number of Operations',
         measure: { min: 0, max: 5, value: 4 },
       },
+      {
+        metric: 'Number of Database Sharing',
+        measure: { min: 0, max: 2, value: 1 },
+      },
     ],
   }
 }
