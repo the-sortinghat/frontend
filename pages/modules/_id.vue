@@ -1,23 +1,15 @@
 <template>
-  <div v-if="systemLoaded" class="flex flex-col">
-    <h1 class="text-xl font-bold">{{ system.name }}</h1>
+  <div v-if="moduleLoaded" class="flex flex-col">
+    <h1 class="text-xl font-bold">{{ module.name }}</h1>
     <div class="flex flex-col lg:flex-row lg:w-1/2 lg:justify-between">
       <div class="card">
-        <h2 class="text-lg">Description:</h2>
-        <p>{{ system.description }}</p>
-      </div>
-      <div class="card">
-        <h2 class="text-lg">Non-Functional Requirements:</h2>
-        <ul>
-          <li v-for="nfr of system.nonFunctionalRequirements" :key="nfr">
-            {{ nfr }}
-          </li>
-        </ul>
+        <h2 class="text-lg">Responsibility:</h2>
+        <p>{{ module.responsibility }}</p>
       </div>
     </div>
     <div class="flex flex-col lg:flex-row lg:w-full lg:justify-between">
       <div class="card">
-        <h2 class="text-lg">Modules:</h2>
+        <h2 class="text-lg">Services:</h2>
         <Graph :nodes="nodes" :links="links" :subtitles="subtitles" />
       </div>
       <div class="card">
@@ -37,9 +29,8 @@ export default {
     Graph,
     MetricsList,
   },
-
   data: () => ({
-    sys: undefined,
+    module: undefined,
     graphData: {
       nodes: [],
       links: [],
@@ -53,65 +44,48 @@ export default {
       ],
     },
   }),
-
   computed: {
-    systemId() {
+    moduleId() {
       return this.$route.params.id
     },
-
-    systemLoaded() {
-      return this.sys !== undefined
+    moduleLoaded() {
+      return this.module !== undefined
     },
-
-    system() {
-      return this.sys
+    services() {
+      return this.module.services
     },
-
     metrics() {
-      return this.sys.metrics
+      return this.module.metrics
     },
-
     nodes() {
       return this.graphData.nodes
     },
-
     links() {
       return this.graphData.links
     },
-
     subtitles() {
       return this.graphData.subtitles
     },
   },
-
   async created() {
-    this.sys = await this.$getSystemData(this.systemId)
-    this.graphData.nodes = this.sys.modules.map((m) => ({
-      ...m,
-      onClick: () => this.goToModulesPage(m.id),
-    }))
-
-    // fake links to test if graph component is correct
-    this.graphData.links = [
-      { source: 1, target: 2, type: 'sync' },
-      { source: 1, target: 3, type: 'sync' },
-      { source: 3, target: 2, type: 'async' },
-      { source: 3, target: 4, type: 'async' },
-      { source: 4, target: 5, type: 'async' },
-      { source: 5, target: 4, type: 'sync' },
-      { source: 5, target: 3, type: 'async' },
-      { source: 5, target: 3, type: 'sync' },
-      { source: 5, target: 2, type: 'async' },
-    ]
+    this.module = await this.$getModuleData(this.moduleId)
+    this.createNodes()
   },
-
   methods: {
-    goToModulesPage(id) {
+    createNodes() {
+      this.graphData.nodes = this.services.map((service) => ({
+        ...service,
+        onClick: () => this.goToServicePage(service.id),
+      }))
+    },
+    goToServicePage(id) {
       this.$router.push({
-        path: `/modules/${id}`,
+        path: `/services/${id}`,
         params: { id },
       })
     },
   },
 }
 </script>
+
+<style></style>

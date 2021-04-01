@@ -18,7 +18,7 @@ export default {
       required: true,
       default: () => [],
       validator: (value) => {
-        const requiredKeys = ['id', 'name', 'onModuleClick']
+        const requiredKeys = ['id', 'name', 'onClick']
         return value.every(
           (val) =>
             JSON.stringify(requiredKeys.sort()) ===

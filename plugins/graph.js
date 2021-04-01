@@ -120,7 +120,7 @@ function setGraphNodesMovementAndClick(node, simulation) {
       event.subject.fy = null
     })
 
-  node.call(drag).on('click', (_, d) => d.onModuleClick())
+  node.call(drag).on('click', (_, d) => d.onClick())
 }
 
 function includeCurvedAttributeForLinks(links) {
