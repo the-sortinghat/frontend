@@ -20,7 +20,7 @@ function parseData(data) {
         access_type: 'rw',
       },
     ],
-    operations: [
+    syncOperations: [
       {
         id: 1,
         label: 'POST /collector/resources/data',

@@ -12,7 +12,7 @@ describe('getServiceData function', () => {
       'name',
       'responsibility',
       'databases',
-      'operations',
+      'syncOperations',
       'asyncOperations',
       'metrics',
     ]
@@ -24,8 +24,8 @@ describe('getServiceData function', () => {
     expect(serviceData.databases).toBeInstanceOf(Array)
   })
 
-  it('returns an array of service operations', () => {
-    expect(serviceData.operations).toBeInstanceOf(Array)
+  it('returns an array of service sync operations', () => {
+    expect(serviceData.syncOperations).toBeInstanceOf(Array)
   })
 
   it('returns an array of service async operations', () => {
@@ -50,8 +50,8 @@ describe('getServiceData function', () => {
     })
   })
 
-  it('returns data with essential properties for each operation', () => {
-    serviceData.operations.forEach((operation) => {
+  it('returns data with essential properties for each sync operation', () => {
+    serviceData.syncOperations.forEach((operation) => {
       expect(operation).toEqual(
         expect.objectContaining({
           id: expect.any(Number),
