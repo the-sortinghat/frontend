@@ -38,6 +38,13 @@ function parseData(data) {
         label: 'POST /collector/resources/:id/data/last',
       },
     ],
+    asyncOperations: [
+      {
+        id: 1,
+        topic: 'lorem_ipsum',
+        broker: 'RabbitMQ',
+      },
+    ],
     metrics: [
       {
         metric: 'Number of Databases',

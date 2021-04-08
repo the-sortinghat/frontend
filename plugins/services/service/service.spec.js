@@ -13,6 +13,7 @@ describe('getServiceData function', () => {
       'responsibility',
       'databases',
       'operations',
+      'asyncOperations',
       'metrics',
     ]
 
@@ -25,6 +26,10 @@ describe('getServiceData function', () => {
 
   it('returns an array of service operations', () => {
     expect(serviceData.operations).toBeInstanceOf(Array)
+  })
+
+  it('returns an array of service async operations', () => {
+    expect(serviceData.asyncOperations).toBeInstanceOf(Array)
   })
 
   it('returns an array of service metrics', () => {
@@ -51,6 +56,18 @@ describe('getServiceData function', () => {
         expect.objectContaining({
           id: expect.any(Number),
           label: expect.any(String),
+        })
+      )
+    })
+  })
+
+  it('returns data with essential properties for each async operation', () => {
+    serviceData.asyncOperations.forEach((operation) => {
+      expect(operation).toEqual(
+        expect.objectContaining({
+          id: expect.any(Number),
+          topic: expect.any(String),
+          broker: expect.any(String),
         })
       )
     })
