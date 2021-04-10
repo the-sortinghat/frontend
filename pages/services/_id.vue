@@ -1,0 +1,91 @@
+<template>
+  <div v-if="serviceLoaded" class="flex flex-col">
+    <h1 class="text-xl font-bold">{{ service.name }}</h1>
+    <div class="flex flex-col lg:flex-row lg:w-1/2 lg:justify-between">
+      <div class="card">
+        <h2 class="text-lg">Responsibility:</h2>
+        <p>{{ service.responsibility }}</p>
+      </div>
+    </div>
+    <div class="flex flex-col lg:flex-row lg:w-full lg:justify-between">
+      <div class="card">
+        <Table
+          v-for="{ title, columns, data } in tables"
+          :key="title"
+          :title="title"
+          :columns="columns"
+          :data="data"
+          class="mt-5"
+        />
+      </div>
+      <div class="card">
+        <h2 class="text-lg">Metrics:</h2>
+        <MetricsList :metrics="metrics" />
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import Table from '@/components/Table.vue'
+import MetricsList from '@/components/MetricsList.vue'
+
+export default {
+  components: {
+    Table,
+    MetricsList,
+  },
+  data: () => ({
+    service: undefined,
+  }),
+  computed: {
+    serviceLoaded() {
+      return this.service !== undefined
+    },
+    metrics() {
+      return this.service.metrics
+    },
+    databases() {
+      return this.service.databases
+    },
+    syncOperations() {
+      return this.service.syncOperations
+    },
+    asyncOperations() {
+      return this.service.asyncOperations
+    },
+    tables() {
+      return [
+        {
+          title: 'Databases',
+          columns: this.getArrayKeys(this.databases),
+          data: this.convertArrayDataIntoTable(this.databases),
+        },
+        {
+          title: 'Sync Operations',
+          columns: this.getArrayKeys(this.syncOperations),
+          data: this.convertArrayDataIntoTable(this.syncOperations),
+        },
+        {
+          title: 'Async Operations',
+          columns: this.getArrayKeys(this.asyncOperations),
+          data: this.convertArrayDataIntoTable(this.asyncOperations),
+        },
+      ]
+    },
+  },
+  async created() {
+    this.service = await this.$getServiceData('1')
+  },
+  methods: {
+    getArrayKeys(array) {
+      return array.length > 0 ? Object.keys(array[0]) : []
+    },
+    convertArrayDataIntoTable(array) {
+      return array.map((item) => Object.keys(item).map((elem) => item[elem]))
+    },
+  },
+}
+</script>
+
+<style></style>
