@@ -1,6 +1,6 @@
 <template>
   <div v-if="serviceLoaded" class="flex flex-col">
-    <h1 class="text-xl font-bold">{{ service.name }}</h1>
+    <h1 class="text-xl font-bold">{{ service.name }} (Service)</h1>
     <div class="flex flex-col lg:flex-row lg:w-1/2 lg:justify-between">
       <div class="card">
         <h2 class="text-lg">Responsibility:</h2>

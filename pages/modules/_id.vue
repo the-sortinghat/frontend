@@ -1,6 +1,6 @@
 <template>
   <div v-if="moduleLoaded" class="flex flex-col">
-    <h1 class="text-xl font-bold">{{ module.name }}</h1>
+    <h1 class="text-xl font-bold">{{ module.name }} (Module)</h1>
     <div class="flex flex-col lg:flex-row lg:w-1/2 lg:justify-between">
       <div class="card">
         <h2 class="text-lg">Responsibility:</h2>
@@ -35,7 +35,7 @@ export default {
       nodes: [],
       links: [],
       subtitles: [
-        { name: 'Module', image: require('@/assets/node.svg') },
+        { name: 'Service', image: require('@/assets/node.svg') },
         { name: 'Synchronous call', image: require('@/assets/arrow.svg') },
         {
           name: 'Asynchronous call',
