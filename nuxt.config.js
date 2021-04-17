@@ -1,6 +1,7 @@
 export default {
   env: {
     sheetsAPIKey: process.env.sheetsAPIKey,
+    sheetID: process.env.sheetID,
   },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
