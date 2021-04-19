@@ -1,5 +1,5 @@
-const bodyParser = require('body-parser')
-const express = require('express')
+import bodyParser from 'body-parser'
+import express from 'express'
 
 const app = express()
 
@@ -9,4 +9,4 @@ app.get('/', (req, res) => {
   return res.status(200).json({ message: 'Hello there' })
 })
 
-module.exports = app
+export default app

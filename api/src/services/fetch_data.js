@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-const axios = require('axios')
+import axios from 'axios'
 
 function getUrl(payload) {
   const { sheetsAPIKey, sheetID, sheetName } = payload
@@ -7,7 +7,7 @@ function getUrl(payload) {
   return `${baseUrl}/${sheetID}/values/'${sheetName}'?key=${sheetsAPIKey}`
 }
 
-async function fetchSpreadsheet(payload, parser) {
+export async function fetchSpreadsheet(payload, parser) {
   let objects = []
 
   try {
@@ -21,5 +21,3 @@ async function fetchSpreadsheet(payload, parser) {
 
   return objects
 }
-
-module.exports = { fetchSpreadsheet }

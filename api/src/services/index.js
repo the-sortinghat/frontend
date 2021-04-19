@@ -1,12 +1,12 @@
-const { fetchSpreadsheet } = require('./fetch_data')
-const {
+import { fetchSpreadsheet } from './fetch_data'
+import {
   rowToSystem,
   rowToModule,
   rowToService,
   rowToDatabase,
   rowToModuleDatabase,
   rowToServiceDatabase,
-} = require('./parse_objects')
+} from './parse_objects'
 
 const payload = {
   sheetsAPIKey: process.env.sheetsAPIKey,
@@ -14,35 +14,26 @@ const payload = {
   sheetName: '',
 }
 
-const getSystems = async () =>
+export const getSystems = async () =>
   await fetchSpreadsheet({ ...payload, sheetName: 'system' }, rowToSystem)
 
-const getModules = async () =>
+export const getModules = async () =>
   await fetchSpreadsheet({ ...payload, sheetName: 'module' }, rowToModule)
 
-const getServices = async () =>
+export const getServices = async () =>
   await fetchSpreadsheet({ ...payload, sheetName: 'service' }, rowToService)
 
-const getDatabases = async () =>
+export const getDatabases = async () =>
   await fetchSpreadsheet({ ...payload, sheetName: 'database' }, rowToDatabase)
 
-const getRelashionshipsModuleDatabase = async () =>
+export const getRelashionshipsModuleDatabase = async () =>
   await fetchSpreadsheet(
     { ...payload, sheetName: 'module_database' },
     rowToModuleDatabase
   )
 
-const getRelashionshipsServiceDatabase = async () =>
+export const getRelashionshipsServiceDatabase = async () =>
   await fetchSpreadsheet(
     { ...payload, sheetName: 'service_database' },
     rowToServiceDatabase
   )
-
-module.exports = {
-  getSystems,
-  getModules,
-  getServices,
-  getDatabases,
-  getRelashionshipsModuleDatabase,
-  getRelashionshipsServiceDatabase,
-}
