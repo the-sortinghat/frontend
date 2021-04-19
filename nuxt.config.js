@@ -26,6 +26,8 @@ export default {
     { src: '~/plugins/graph.js' },
   ],
 
+  serverMiddleware: [{ path: '/api', handler: '~/api/index.js' }],
+
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
