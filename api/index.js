@@ -1,5 +1,6 @@
 import bodyParser from 'body-parser'
 import express from 'express'
+import cors from 'cors'
 import ModuleController from './src/controllers/module.controller'
 import ServiceController from './src/controllers/service.controller'
 import SystemController from './src/controllers/system.controller'
@@ -7,6 +8,8 @@ import SystemController from './src/controllers/system.controller'
 const app = express()
 
 app.use(bodyParser.json())
+
+app.use(cors())
 
 app.get('/systems', SystemController.index)
 
