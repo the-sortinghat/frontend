@@ -1,62 +1,36 @@
-function parseData(data) {
-  // parsing data into a valid object
-
+/* eslint-disable no-console */
+function buildDefaultSystem() {
   return {
-    name: 'InterSCity',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing.',
-    nonFunctionalRequirements: [
-      'Cloud-native',
-      'Interoperability',
-      'Adaptation',
-      'Evolvability',
-    ],
-    modules: [
-      {
-        id: 1,
-        name: 'Resource Discovery',
-      },
-      {
-        id: 2,
-        name: 'Data Collector',
-      },
-      {
-        id: 3,
-        name: 'Resource Catolog',
-      },
-      {
-        id: 4,
-        name: 'Actuator Controller',
-      },
-      {
-        id: 5,
-        name: 'Resource Adaptor',
-      },
-    ],
-    metrics: [
-      {
-        metric: 'services per module',
-        measure: { min: 0, max: 5, value: 1 },
-      },
-      {
-        metric: 'modules sharing DB',
-        measure: { min: 0, max: 8, value: 0 },
-      },
-      {
-        metric: 'synchronous coupling level',
-        measure: { min: 0, max: 10, value: 3 },
-      },
-      {
-        metric: 'asynchronous coupling level',
-        measure: { min: 0, max: 9, value: 6 },
-      },
-    ],
+    name: undefined,
+    description: undefined,
+    nonFunctionalRequirements: [],
+    modules: [],
+    metrics: [],
   }
 }
 
-function getSystemData(systemId) {
+function parseData(data) {
+  // parsing data into a valid object
+  return data
+}
+
+async function getSystemData(systemId) {
   // fetch from external source data
-  const parsedData = parseData({})
-  return new Promise((resolve) => resolve(parsedData))
+  const baseUrl = process.env.development
+    ? 'http://localhost:3000'
+    : 'https://the-sortinghat.netlify.app'
+
+  let systemData = buildDefaultSystem()
+
+  try {
+    const response = await fetch(`${baseUrl}/api/systems/${systemId}`)
+    systemData = parseData(await response.json())
+  } catch (err) {
+    console.log('error occuried while fetching from api...')
+    console.log(err.message)
+  }
+
+  return systemData
 }
 
 export default getSystemData
