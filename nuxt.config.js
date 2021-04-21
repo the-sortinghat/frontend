@@ -43,9 +43,6 @@ export default {
   modules: ['@nuxtjs/axios'],
 
   axios: {
-    baseURL: process.env.DEVELOPMENT
-      ? 'http://localhost:3000'
-      : 'https://the-sortinghat.netlify.app',
     proxy: true,
     credentials: false,
   },

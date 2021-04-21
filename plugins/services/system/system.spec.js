@@ -4,7 +4,17 @@ describe('getSystemData function', () => {
   let systemData
 
   beforeAll(async () => {
-    systemData = await getSystemData('1')
+    systemData = await getSystemData('1', {
+      $get: jest.fn((_) =>
+        Promise.resolve({
+          name: undefined,
+          description: undefined,
+          nonFunctionalRequirements: [],
+          modules: [],
+          metrics: [],
+        })
+      ),
+    })
   })
 
   it('returns a system data with essential properties', () => {
