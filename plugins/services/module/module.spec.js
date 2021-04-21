@@ -4,7 +4,16 @@ describe('getModuleData function', () => {
   let moduleData
 
   beforeAll(async () => {
-    moduleData = await getModuleData('1')
+    moduleData = await getModuleData('1', {
+      $get: jest.fn((_) =>
+        Promise.resolve({
+          name: undefined,
+          responsibility: undefined,
+          services: [],
+          metrics: [],
+        })
+      ),
+    })
   })
 
   it('returns a module data with essential properties', () => {

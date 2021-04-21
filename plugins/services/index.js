@@ -4,6 +4,6 @@ import getServiceData from './service'
 
 export default ({ $axios }, inject) => {
   inject('getSystemData', (id) => getSystemData(id, $axios))
-  inject('getModuleData', (id) => getModuleData(id))
+  inject('getModuleData', (id) => getModuleData(id, $axios))
   inject('getServiceData', (id) => getServiceData(id))
 }

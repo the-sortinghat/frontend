@@ -1,40 +1,21 @@
+/* eslint-disable no-console */
 function parseData(data) {
   // parsing data into a valid object
-
-  return {
-    name: 'Data Collector',
-    responsibility: 'Lorem ipsum dolor sit amet, consectetur adipiscing.',
-    services: [
-      {
-        id: 1,
-        name: 'Data Collector',
-      },
-    ],
-    metrics: [
-      {
-        metric: 'Number of Services',
-        measure: { min: 0, max: 3, value: 1 },
-      },
-      {
-        metric: 'Number of Databases',
-        measure: { min: 0, max: 2, value: 2 },
-      },
-      {
-        metric: 'Number of Operations',
-        measure: { min: 0, max: 5, value: 4 },
-      },
-      {
-        metric: 'Number of Database Sharing',
-        measure: { min: 0, max: 2, value: 1 },
-      },
-    ],
-  }
+  return data
 }
 
-function getModuleData(moduleId) {
-  // fetch from external source data
-  const parsedData = parseData({})
-  return new Promise((resolve) => resolve(parsedData))
+async function getModuleData(moduleId, $axios) {
+  let moduleData = []
+
+  try {
+    const response = await $axios.$get(`/api/modules/${moduleId}`)
+    moduleData = parseData(response)
+  } catch (err) {
+    console.log('error occuried while fetching from api...')
+    console.log(err.message)
+  }
+
+  return moduleData
 }
 
 export default getModuleData
