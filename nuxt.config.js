@@ -2,7 +2,6 @@ export default {
   env: {
     sheetsAPIKey: process.env.sheetsAPIKey,
     sheetID: process.env.sheetID,
-    development: process.env.DEVELOPMENT,
   },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -41,7 +40,15 @@ export default {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [],
+  modules: ['@nuxtjs/axios'],
+
+  axios: {
+    baseURL: process.env.DEVELOPMENT
+      ? 'http://localhost:3000'
+      : 'https://the-sortinghat.netlify.app',
+    proxy: true,
+    credentials: false,
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},

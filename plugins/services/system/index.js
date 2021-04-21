@@ -14,17 +14,13 @@ function parseData(data) {
   return data
 }
 
-async function getSystemData(systemId) {
-  // fetch from external source data
-  const baseUrl = process.env.development
-    ? 'http://localhost:3000'
-    : 'https://the-sortinghat.netlify.app'
-
+async function getSystemData(systemId, $axios) {
   let systemData = buildDefaultSystem()
+  console.log($axios)
 
   try {
-    const response = await fetch(`${baseUrl}/api/systems/${systemId}`)
-    systemData = parseData(await response.json())
+    const response = await $axios.$get(`/api/systems/${systemId}`)
+    systemData = parseData(response)
   } catch (err) {
     console.log('error occuried while fetching from api...')
     console.log(err.message)
