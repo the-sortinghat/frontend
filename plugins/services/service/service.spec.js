@@ -4,7 +4,18 @@ describe('getServiceData function', () => {
   let serviceData
 
   beforeAll(async () => {
-    serviceData = await getServiceData('1')
+    serviceData = await getServiceData('1', {
+      $get: jest.fn((_) =>
+        Promise.resolve({
+          name: undefined,
+          responsibility: undefined,
+          databases: [],
+          syncOperations: [],
+          asyncOperations: [],
+          metrics: [],
+        })
+      ),
+    })
   })
 
   it('returns a service data with essential properties', () => {
