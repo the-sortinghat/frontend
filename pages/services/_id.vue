@@ -24,6 +24,9 @@
       </div>
     </div>
   </div>
+  <div v-else class="flex justify-center items-center w-full h-screen">
+    <p>Loading...</p>
+  </div>
 </template>
 
 <script>
