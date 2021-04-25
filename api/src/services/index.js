@@ -6,6 +6,7 @@ import {
   rowToDatabase,
   rowToModuleDatabase,
   rowToServiceDatabase,
+  rowToServiceCommunication,
 } from './parse_objects'
 
 const payload = {
@@ -36,4 +37,10 @@ export const getRelashionshipsServiceDatabase = async () =>
   await fetchSpreadsheet(
     { ...payload, sheetName: 'service_database' },
     rowToServiceDatabase
+  )
+
+export const getServiceCommunication = async () =>
+  await fetchSpreadsheet(
+    { ...payload, sheetName: 'service_communication' },
+    rowToServiceCommunication
   )

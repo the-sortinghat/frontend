@@ -48,3 +48,9 @@ export const rowToServiceDatabase = (row) => ({
   access_type: row[3],
   namespace: row[4],
 })
+
+export const rowToServiceCommunication = (row) => ({
+  source: parseInt(row[0]),
+  target: parseInt(row[1]),
+  type: parseInt(row[2]) ? 'sync' : 'async',
+})
