@@ -1,14 +1,28 @@
 /* eslint-disable no-console */
-import { parseSystemData } from './parser'
+function parseData(system, sysModules, metrics) {
+  // parsing data into a valid object
+  const { name, description, nonFunctionalRequirements } = system
+  const modules = sysModules.modules.map(({ id, name }) => ({ id, name }))
+  const links = sysModules.links
 
-export async function getSystemData(systemId, $axios) {
+  return {
+    name,
+    description,
+    nonFunctionalRequirements,
+    modules,
+    links,
+    metrics,
+  }
+}
+
+async function getSystemData(systemId, $axios) {
   let systemData = {}
 
   try {
     const system = await $axios.$get(`/api/systems/${systemId}`)
     const sysModules = await $axios.$get(`/api/systems/${systemId}/modules`)
     const sysMetrics = await $axios.$get(`/api/systems/${systemId}/metrics`)
-    systemData = parseSystemData(system, sysModules, sysMetrics)
+    systemData = parseData(system, sysModules, sysMetrics)
   } catch (err) {
     console.log('error occuried while fetching from api...')
     console.log(err.message)
@@ -16,3 +30,5 @@ export async function getSystemData(systemId, $axios) {
 
   return systemData
 }
+
+export default getSystemData

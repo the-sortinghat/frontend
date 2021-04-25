@@ -1,22 +1,33 @@
-import { getSystemData } from './index'
-
-jest.mock('./parser', () => ({
-  parseSystemData: jest.fn().mockImplementation(() => ({
-    name: undefined,
-    description: undefined,
-    nonFunctionalRequirements: [],
-    modules: [],
-    links: [],
-    metrics: [],
-  })),
-}))
+import getSystemData from './index'
 
 describe('getSystemData function', () => {
   let systemData
 
   beforeAll(async () => {
     systemData = await getSystemData('1', {
-      $get: jest.fn((_) => Promise.resolve({})),
+      $get: jest
+        .fn()
+        .mockReturnValueOnce(
+          Promise.resolve({
+            name: undefined,
+            description: undefined,
+            nonFunctionalRequirements: [],
+          })
+        )
+        .mockReturnValueOnce(
+          Promise.resolve({
+            modules: [
+              { id: 1, name: '' },
+              { id: 2, name: '' },
+            ],
+            links: [{ source: 1, target: 2, type: 'sync' }],
+          })
+        )
+        .mockReturnValueOnce(
+          Promise.resolve([
+            { metric: '', measure: { min: 0, max: 1, value: 1 } },
+          ])
+        ),
     })
   })
 
@@ -37,6 +48,10 @@ describe('getSystemData function', () => {
     expect(systemData.modules).toBeInstanceOf(Array)
   })
 
+  it("returns an array of modules's links", () => {
+    expect(systemData.links).toBeInstanceOf(Array)
+  })
+
   it("returns an array of system's metrics", () => {
     expect(systemData.metrics).toBeInstanceOf(Array)
   })
@@ -49,6 +64,19 @@ describe('getSystemData function', () => {
           name: expect.any(String),
         })
       )
+    })
+  })
+
+  it('returns data with essential properties for each link', () => {
+    systemData.links.forEach((link) => {
+      expect(link).toEqual(
+        expect.objectContaining({
+          source: expect.any(Number),
+          target: expect.any(Number),
+          type: expect.any(String),
+        })
+      )
+      expect(['sync', 'async']).toContain(link.type)
     })
   })
 
