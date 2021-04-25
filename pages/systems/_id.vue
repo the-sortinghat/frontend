@@ -26,6 +26,9 @@
       </div>
     </div>
   </div>
+  <div v-else class="flex justify-center items-center w-full h-screen">
+    <p>Loading...</p>
+  </div>
 </template>
 
 <script>
@@ -91,17 +94,7 @@ export default {
       onClick: () => this.goToModulesPage(m.id),
     }))
 
-    // fake links to test if graph component is correct
-    this.graphData.links = [
-      { source: 1, target: 3, type: 'async' },
-      { source: 3, target: 1, type: 'sync' },
-      { source: 3, target: 2, type: 'async' },
-      { source: 3, target: 4, type: 'sync' },
-      { source: 4, target: 1, type: 'async' },
-      { source: 4, target: 2, type: 'async' },
-      { source: 5, target: 2, type: 'sync' },
-      { source: 5, target: 4, type: 'sync' },
-    ]
+    this.graphData.links = this.sys.links
   },
 
   methods: {
