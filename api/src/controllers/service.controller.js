@@ -34,18 +34,25 @@ class ServiceController {
       name: op,
     }))
 
-    const metrics = serviceMetrics(id, allServices)
-
     const response = {
       name,
       responsibility,
       databases,
       syncOperations,
       asyncOperations: [],
-      metrics,
     }
 
     return res.status(200).json(response)
+  }
+
+  static async getMetrics(req, res) {
+    const id = parseInt(req.params.id)
+
+    const allServices = await getServices()
+
+    const metrics = serviceMetrics(id, allServices)
+
+    return res.status(200).json(metrics)
   }
 }
 
