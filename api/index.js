@@ -15,6 +15,10 @@ app.get('/systems', SystemController.index)
 
 app.get('/systems/:id', SystemController.find)
 
+app.get('/systems/:id/modules', SystemController.getModules)
+
+app.get('/systems/:id/metrics', SystemController.getMetrics)
+
 app.get('/modules/:id', ModuleController.find)
 
 app.get('/services/:id', ServiceController.find)

@@ -2,6 +2,7 @@ import { systemMetrics } from '../metrics/system'
 import {
   getModules,
   getRelashionshipsModuleDatabase,
+  getServiceCommunication,
   getServices,
   getSystems,
 } from '../services'
@@ -17,19 +18,40 @@ class SystemController {
 
     const allSystems = await getSystems()
 
+    const system = allSystems.find((sys) => sys.id === id)
+
+    return res.status(200).json(system)
+  }
+
+  static async getModules(req, res) {
+    const id = parseInt(req.params.id)
+
+    const allModules = await getModules()
+
+    const allLinks = await getServiceCommunication()
+
+    const modules = allModules.filter((mod) => mod.systemId === id)
+
+    const links = allLinks.filter((link) =>
+      modules.find((mod) => mod.id === link.source)
+    )
+
+    const response = {
+      modules,
+      links,
+    }
+
+    return res.status(200).json(response)
+  }
+
+  static async getMetrics(req, res) {
+    const id = parseInt(req.params.id)
+
     const allModules = await getModules()
 
     const allServices = await getServices()
 
     const relashionshipsModuleDatabase = await getRelashionshipsModuleDatabase()
-
-    const { name, description, nonFunctionalRequirements } = allSystems.find(
-      (sys) => sys.id === id
-    )
-
-    const modules = allModules
-      .filter((mod) => mod.systemId === id)
-      .map(({ id, name }) => ({ id, name }))
 
     const metrics = systemMetrics(
       id,
@@ -38,15 +60,7 @@ class SystemController {
       relashionshipsModuleDatabase
     )
 
-    const response = {
-      name,
-      description,
-      nonFunctionalRequirements,
-      modules,
-      metrics,
-    }
-
-    return res.status(200).json(response)
+    return res.status(200).json(metrics)
   }
 }
 
