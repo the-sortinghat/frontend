@@ -39,6 +39,9 @@ export default {
     service: undefined,
   }),
   computed: {
+    serviceId() {
+      return this.$route.params.id
+    },
     serviceLoaded() {
       return this.service !== undefined
     },
@@ -75,7 +78,7 @@ export default {
     },
   },
   async created() {
-    this.service = await this.$getServiceData('1')
+    this.service = await this.$getServiceData(this.serviceId)
   },
   methods: {
     getArrayKeys(array) {
