@@ -32,8 +32,10 @@ class SystemController {
 
     const modules = allModules.filter((mod) => mod.systemId === id)
 
-    const links = allLinks.filter((link) =>
-      modules.find((mod) => mod.id === link.source)
+    const links = allLinks.filter(
+      (link) =>
+        modules.find((mod) => mod.id === link.source) &&
+        modules.find((mod) => mod.id === link.target)
     )
 
     const response = {
