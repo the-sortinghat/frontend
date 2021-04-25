@@ -5,16 +5,24 @@ describe('getServiceData function', () => {
 
   beforeAll(async () => {
     serviceData = await getServiceData('1', {
-      $get: jest.fn((_) =>
-        Promise.resolve({
-          name: undefined,
-          responsibility: undefined,
-          databases: [],
-          syncOperations: [],
-          asyncOperations: [],
-          metrics: [],
-        })
-      ),
+      $get: jest
+        .fn()
+        .mockReturnValueOnce(
+          Promise.resolve({
+            name: undefined,
+            responsibility: undefined,
+            databases: [
+              { id: 1, model: '', role: '', namespace: '', access_type: '' },
+            ],
+            syncOperations: [{ id: 1, label: '' }],
+            asyncOperations: [{ id: 1, topic: '', broker: '' }],
+          })
+        )
+        .mockReturnValueOnce(
+          Promise.resolve([
+            { metric: '', measure: { min: 0, max: 1, value: 1 } },
+          ])
+        ),
     })
   })
 
