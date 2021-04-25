@@ -21,6 +21,10 @@ app.get('/systems/:id/metrics', SystemController.getMetrics)
 
 app.get('/modules/:id', ModuleController.find)
 
+app.get('/modules/:id/services', ModuleController.getServices)
+
+app.get('/modules/:id/metrics', ModuleController.getMetrics)
+
 app.get('/services/:id', ServiceController.find)
 
 export default app
