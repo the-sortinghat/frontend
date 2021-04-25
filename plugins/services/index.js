@@ -1,4 +1,4 @@
-import getSystemData from './system'
+import { getSystemData } from './system'
 import getModuleData from './module'
 import getServiceData from './service'
 

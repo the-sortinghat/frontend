@@ -1,19 +1,22 @@
-import getSystemData from './index'
+import { getSystemData } from './index'
+
+jest.mock('./parser', () => ({
+  parseSystemData: jest.fn().mockImplementation(() => ({
+    name: undefined,
+    description: undefined,
+    nonFunctionalRequirements: [],
+    modules: [],
+    links: [],
+    metrics: [],
+  })),
+}))
 
 describe('getSystemData function', () => {
   let systemData
 
   beforeAll(async () => {
     systemData = await getSystemData('1', {
-      $get: jest.fn((_) =>
-        Promise.resolve({
-          name: undefined,
-          description: undefined,
-          nonFunctionalRequirements: [],
-          modules: [],
-          metrics: [],
-        })
-      ),
+      $get: jest.fn((_) => Promise.resolve({})),
     })
   })
 
@@ -23,6 +26,7 @@ describe('getSystemData function', () => {
       'description',
       'nonFunctionalRequirements',
       'modules',
+      'links',
       'metrics',
     ]
 
