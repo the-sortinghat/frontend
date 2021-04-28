@@ -8,9 +8,13 @@
         </tr>
       </thead>
       <tbody class="border border-black">
-        <tr v-for="c in numberOfColumns" :key="c" class="border border-black">
+        <tr
+          v-for="line in numberOfLines"
+          :key="line"
+          class="border border-black"
+        >
           <td
-            v-for="value in data[c - 1]"
+            v-for="value in data[line - 1]"
             :key="value"
             class="text-center border border-black"
           >
@@ -45,8 +49,8 @@ export default {
     },
   },
   computed: {
-    numberOfColumns() {
-      return this.columns.length
+    numberOfLines() {
+      return this.data.length
     },
   },
 }
