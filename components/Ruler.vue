@@ -6,6 +6,8 @@
     <div
       class="flex justify-center place-content-evenly font-bold items-center border border-black"
       :style="metricWidth"
+      @mouseover="showValue = true"
+      @mouseleave="showValue = false"
     >
       <div
         v-for="i in numberOfBoxes()"
@@ -13,6 +15,13 @@
         :class="boxStyleClasses(i, numberOfBoxes(), measure.value)"
         :style="boxWidth()"
       ></div>
+    </div>
+    <div
+      v-if="showValue"
+      class="bg-black bg-opacity-50 rounded-xl text-white flex justify-center"
+      style="position: absolute; width: 100px"
+    >
+      Value: {{ measure.value }}
     </div>
     <p class="ml-1 self-center">
       {{ measure.max }}
@@ -36,6 +45,7 @@ export default {
   },
   data: () => ({
     width: 450,
+    showValue: false,
   }),
   computed: {
     metricWidth() {
@@ -56,7 +66,7 @@ export default {
       let classes = ''
 
       if (index <= value) classes += 'bg-purple-500 '
-      if (index < total) classes += 'border-r border-black'
+      if (index < total) classes += 'border-r border-gray-500'
 
       return classes
     },
