@@ -2,6 +2,7 @@ import { serviceMetrics } from '../metrics/service'
 import {
   getDatabases,
   getRelashionshipsServiceDatabase,
+  getServiceCommunication,
   getServices,
 } from '../services'
 
@@ -12,6 +13,8 @@ class ServiceController {
     const allServices = await getServices()
 
     const allDatabases = await getDatabases()
+
+    const allLinks = await getServiceCommunication()
 
     const { name, responsibility, operations } = allServices.find(
       (s) => s.id === id
@@ -34,12 +37,23 @@ class ServiceController {
       name: op,
     }))
 
+    const asyncOperations = allLinks
+      .filter(
+        (link) =>
+          link.type === 'async' && (id === link.source || id === link.target)
+      )
+      .map(({ source, target, label }) => ({
+        label,
+        publisherId: source,
+        subscriberId: target,
+      }))
+
     const response = {
       name,
       responsibility,
       databases,
       syncOperations,
-      asyncOperations: [],
+      asyncOperations,
     }
 
     return res.status(200).json(response)
