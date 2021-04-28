@@ -21,41 +21,70 @@ function modulesSharingDatabases(modules, relashionshipsModuleDatabase) {
   }, 0)
 }
 
-function servicesPerModule(sysModules, services) {
-  const totalOfServices = sysModules.reduce((acc, val) => {
-    return (
-      acc + services.filter((service) => service.moduleId === val.id).length
-    )
-  }, 0)
+const getNumberOfSyncOps = (links) =>
+  links.reduce((acc, { type }) => (type === 'sync' ? acc + 1 : acc), 0)
 
-  return totalOfServices / sysModules.length
-}
-
-function getMaxServicesPerModule(modules, services) {
-  return modules.reduce((acc, { id }) => {
-    const totalServices = services.filter((serv) => serv.moduleId === id).length
-    return totalServices > acc ? totalServices : acc
-  }, 0)
-}
-
-export function systemMetrics(systemId, modules, services, relModuleDatabase) {
+export function systemMetrics(
+  systemId,
+  modules,
+  services,
+  relModuleDatabase,
+  allLinks
+) {
   const systemModules = modules.filter((mod) => mod.systemId === systemId)
+
+  const systemServices = services.filter(({ moduleId }) =>
+    systemModules.find(({ id }) => id === moduleId)
+  )
+
+  const systemLinks = allLinks.filter(
+    ({ source, target }) =>
+      systemServices.find(({ id }) => id === source) &&
+      systemServices.find(({ id }) => id === target)
+  )
+
+  const numberOfSyncOps = getNumberOfSyncOps(systemLinks)
 
   return [
     {
-      metric: 'services per module',
+      metric: 'number of modules',
       measure: {
         min: 0,
-        max: getMaxServicesPerModule(modules, services),
-        value: servicesPerModule(systemModules, services),
+        max: 10, // fake max for a while (we have only one system yet)
+        value: systemModules.length,
+      },
+    },
+    {
+      metric: 'number of services',
+      measure: {
+        min: 0,
+        max: 10, // fake max for a while (we have only one system yet)
+        value: systemServices.length,
       },
     },
     {
       metric: 'modules sharing DB',
       measure: {
         min: 0,
-        max: 8, // fake max for a while
+        max: 8, // fake max for a while (we have only one system yet)
         value: modulesSharingDatabases(systemModules, relModuleDatabase),
+      },
+    },
+    {
+      metric: '% of synchronous connections',
+      measure: {
+        min: 0,
+        max: 100,
+        value: (numberOfSyncOps * 100) / systemLinks.length,
+      },
+    },
+    {
+      metric: '% of asynchronous connections',
+      measure: {
+        min: 0,
+        max: 100,
+        value:
+          ((systemLinks.length - numberOfSyncOps) * 100) / systemLinks.length,
       },
     },
   ]

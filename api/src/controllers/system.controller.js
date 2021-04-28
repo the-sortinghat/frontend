@@ -57,11 +57,14 @@ class SystemController {
 
     const relashionshipsModuleDatabase = await getRelashionshipsModuleDatabase()
 
+    const allLinks = await getServiceCommunication()
+
     const metrics = systemMetrics(
       id,
       allModules,
       allServices,
-      relashionshipsModuleDatabase
+      relashionshipsModuleDatabase,
+      allLinks
     )
 
     return res.status(200).json(metrics)
