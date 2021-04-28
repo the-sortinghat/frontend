@@ -15,7 +15,7 @@ describe('getServiceData function', () => {
               { id: 1, model: '', role: '', namespace: '', access_type: '' },
             ],
             syncOperations: [{ id: 1, label: '' }],
-            asyncOperations: [{ id: 1, topic: '', broker: '' }],
+            asyncOperations: [{ label: '', publisherId: 1, subscriberId: 2 }],
           })
         )
         .mockReturnValueOnce(
@@ -84,9 +84,9 @@ describe('getServiceData function', () => {
     serviceData.asyncOperations.forEach((operation) => {
       expect(operation).toEqual(
         expect.objectContaining({
-          id: expect.any(Number),
-          topic: expect.any(String),
-          broker: expect.any(String),
+          publisherId: expect.any(Number),
+          subscriberId: expect.any(Number),
+          label: expect.any(String),
         })
       )
     })
