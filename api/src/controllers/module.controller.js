@@ -21,11 +21,13 @@ class ModuleController {
 
     const services = allServices.filter(({ moduleId }) => moduleId === id)
 
-    const links = allLinks.filter(
-      (link) =>
-        services.find((service) => service.id === link.source) &&
-        services.find((service) => service.id === link.target)
-    )
+    const links = allLinks
+      .filter(
+        (link) =>
+          services.find((service) => service.id === link.source) &&
+          services.find((service) => service.id === link.target)
+      )
+      .map(({ source, target, type }) => ({ source, target, type }))
 
     const response = {
       services,

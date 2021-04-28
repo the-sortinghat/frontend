@@ -32,11 +32,13 @@ class SystemController {
 
     const modules = allModules.filter((mod) => mod.systemId === id)
 
-    const links = allLinks.filter(
-      (link) =>
-        modules.find((mod) => mod.id === link.source) &&
-        modules.find((mod) => mod.id === link.target)
-    )
+    const links = allLinks
+      .filter(
+        (link) =>
+          modules.find((mod) => mod.id === link.source) &&
+          modules.find((mod) => mod.id === link.target)
+      )
+      .map(({ source, target, type }) => ({ source, target, type }))
 
     const response = {
       modules,

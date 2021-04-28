@@ -53,4 +53,5 @@ export const rowToServiceCommunication = (row) => ({
   source: parseInt(row[0]),
   target: parseInt(row[1]),
   type: parseInt(row[2]) ? 'sync' : 'async',
+  label: row[3],
 })
