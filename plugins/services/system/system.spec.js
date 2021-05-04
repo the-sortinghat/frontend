@@ -24,9 +24,10 @@ describe('getSystemData function', () => {
           })
         )
         .mockReturnValueOnce(
-          Promise.resolve([
-            { metric: '', measure: { min: 0, max: 1, value: 1 } },
-          ])
+          Promise.resolve({
+            nonMeasurable: [{ name: '', value: '' }],
+            measurable: [{ name: '', measure: { min: 0, max: 5, value: 3 } }],
+          })
         ),
     })
   })
@@ -52,8 +53,13 @@ describe('getSystemData function', () => {
     expect(systemData.links).toBeInstanceOf(Array)
   })
 
-  it("returns an array of system's metrics", () => {
-    expect(systemData.metrics).toBeInstanceOf(Array)
+  it("returns an object of system's metrics", () => {
+    expect(systemData.metrics).toEqual(
+      expect.objectContaining({
+        nonMeasurable: expect.any(Array),
+        measurable: expect.any(Array),
+      })
+    )
   })
 
   it('returns data with essential properties for each module', () => {
@@ -81,10 +87,19 @@ describe('getSystemData function', () => {
   })
 
   it('returns data with essential properties for each metric', () => {
-    systemData.metrics.forEach((metric) => {
-      expect(metric).toEqual(
+    const { nonMeasurable, measurable } = systemData.metrics
+    nonMeasurable.forEach((m) => {
+      expect(m).toEqual(
         expect.objectContaining({
-          metric: expect.any(String),
+          name: expect.any(String),
+          value: expect.anything(),
+        })
+      )
+    })
+    measurable.forEach((m) => {
+      expect(m).toEqual(
+        expect.objectContaining({
+          name: expect.any(String),
           measure: expect.objectContaining({
             min: expect.any(Number),
             max: expect.any(Number),

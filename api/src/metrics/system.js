@@ -45,47 +45,50 @@ export function systemMetrics(
 
   const numberOfSyncOps = getNumberOfSyncOps(systemLinks)
 
-  return [
-    {
-      metric: 'number of modules',
-      measure: {
-        min: 0,
-        max: 10, // fake max for a while (we have only one system yet)
-        value: systemModules.length,
+  return {
+    nonMeasurable: [],
+    measurable: [
+      {
+        name: 'number of modules',
+        measure: {
+          min: 0,
+          max: 10, // fake max for a while (we have only one system yet)
+          value: systemModules.length,
+        },
       },
-    },
-    {
-      metric: 'number of services',
-      measure: {
-        min: 0,
-        max: 10, // fake max for a while (we have only one system yet)
-        value: systemServices.length,
+      {
+        name: 'number of services',
+        measure: {
+          min: 0,
+          max: 10, // fake max for a while (we have only one system yet)
+          value: systemServices.length,
+        },
       },
-    },
-    {
-      metric: 'modules sharing DB',
-      measure: {
-        min: 0,
-        max: 8, // fake max for a while (we have only one system yet)
-        value: modulesSharingDatabases(systemModules, relModuleDatabase),
+      {
+        name: 'modules sharing DB',
+        measure: {
+          min: 0,
+          max: 8, // fake max for a while (we have only one system yet)
+          value: modulesSharingDatabases(systemModules, relModuleDatabase),
+        },
       },
-    },
-    {
-      metric: '% of synchronous connections',
-      measure: {
-        min: 0,
-        max: 100,
-        value: (numberOfSyncOps * 100) / systemLinks.length,
+      {
+        name: '% of synchronous connections',
+        measure: {
+          min: 0,
+          max: 100,
+          value: (numberOfSyncOps * 100) / systemLinks.length,
+        },
       },
-    },
-    {
-      metric: '% of asynchronous connections',
-      measure: {
-        min: 0,
-        max: 100,
-        value:
-          ((systemLinks.length - numberOfSyncOps) * 100) / systemLinks.length,
+      {
+        name: '% of asynchronous connections',
+        measure: {
+          min: 0,
+          max: 100,
+          value:
+            ((systemLinks.length - numberOfSyncOps) * 100) / systemLinks.length,
+        },
       },
-    },
-  ]
+    ],
+  }
 }

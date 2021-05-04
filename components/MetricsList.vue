@@ -1,12 +1,25 @@
 <template>
   <div>
     <div
-      v-for="{ metric, measure } in metrics"
-      :key="metric"
-      class="flex flex-row justify-between mb-8"
+      v-for="{ name, value } in nonMeasurableMetrics"
+      :key="name"
+      class="flex flex-row items-center mb-8"
     >
       <div class="bg-purple-700 text-white w-32 mr-8 p-3 rounded-xl">
-        {{ metric }}
+        {{ name }}
+      </div>
+
+      <div>
+        {{ value }}
+      </div>
+    </div>
+    <div
+      v-for="{ name, measure } in measurableMetrics"
+      :key="name"
+      class="flex flex-row mb-8"
+    >
+      <div class="bg-purple-700 text-white w-32 mr-8 p-3 rounded-xl">
+        {{ name }}
       </div>
 
       <Ruler :measure="measure" />
@@ -23,16 +36,22 @@ export default {
   },
   props: {
     metrics: {
-      type: Array,
+      type: Object,
       required: true,
-      default: () => [],
+      default: () => ({}),
       validator: (value) => {
-        const keys = JSON.stringify(['metric', 'measure'].sort())
-        return value.every((val) => {
-          const objKeys = JSON.stringify(Object.keys(val).sort())
-          return objKeys === keys
-        })
+        const keys = JSON.stringify(['measurable', 'nonMeasurable'].sort())
+        const objKeys = JSON.stringify(Object.keys(value).sort())
+        return keys === objKeys
       },
+    },
+  },
+  computed: {
+    nonMeasurableMetrics() {
+      return this.metrics.nonMeasurable
+    },
+    measurableMetrics() {
+      return this.metrics.measurable
     },
   },
 }

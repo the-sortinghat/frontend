@@ -17,22 +17,25 @@ export function serviceMetrics(id, services) {
     (s) => s.id === id
   )
 
-  return [
-    {
-      metric: 'Number of Databases',
-      measure: {
-        min: 0,
-        max: getMaxNumberOfDatabases(services),
-        value: numberOfDatabases,
+  return {
+    nonMeasurable: [],
+    measurable: [
+      {
+        name: 'Number of Databases',
+        measure: {
+          min: 0,
+          max: getMaxNumberOfDatabases(services),
+          value: numberOfDatabases,
+        },
       },
-    },
-    {
-      metric: 'Number of Operations',
-      measure: {
-        min: 0,
-        max: getMaxNumberOfOperations(services),
-        value: numberOfOperations,
+      {
+        name: 'Number of Operations',
+        measure: {
+          min: 0,
+          max: getMaxNumberOfOperations(services),
+          value: numberOfOperations,
+        },
       },
-    },
-  ]
+    ],
+  }
 }
