@@ -18,8 +18,8 @@
     </div>
     <div
       v-if="showValue"
-      class="bg-black bg-opacity-50 rounded-xl text-white flex justify-center"
-      style="position: absolute; width: 100px"
+      class="bg-black bg-opacity-50 rounded-xl text-white flex justify-center ml-3"
+      style="position: absolute; width: 150px"
     >
       Value: {{ measure.value }}
     </div>

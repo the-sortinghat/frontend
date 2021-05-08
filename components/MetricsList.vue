@@ -1,28 +1,28 @@
 <template>
   <div>
     <div
+      v-for="{ name, measure } in measurableMetrics"
+      :key="name"
+      class="flex flex-row mb-8"
+    >
+      <div class="bg-purple-700 text-white w-48 mr-8 p-3 rounded-xl">
+        {{ name }}
+      </div>
+
+      <Ruler :measure="measure" />
+    </div>
+    <div
       v-for="{ name, value } in nonMeasurableMetrics"
       :key="name"
       class="flex flex-row items-center mb-8"
     >
-      <div class="bg-purple-700 text-white w-32 mr-8 p-3 rounded-xl">
+      <div class="bg-purple-700 text-white w-48 mr-8 p-3 rounded-xl">
         {{ name }}
       </div>
 
       <div>
         {{ value }}
       </div>
-    </div>
-    <div
-      v-for="{ name, measure } in measurableMetrics"
-      :key="name"
-      class="flex flex-row mb-8"
-    >
-      <div class="bg-purple-700 text-white w-32 mr-8 p-3 rounded-xl">
-        {{ name }}
-      </div>
-
-      <Ruler :measure="measure" />
     </div>
   </div>
 </template>
