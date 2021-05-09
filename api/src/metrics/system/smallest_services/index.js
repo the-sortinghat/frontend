@@ -1,5 +1,5 @@
 export default function smallestServices(services) {
-  if (services.length === 0) return 'The system has no services'
+  if (services.length === 0) return 'The system has no service'
 
   const minValue = services
     .slice(1)

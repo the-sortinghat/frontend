@@ -1,5 +1,5 @@
 export default function largestServices(services) {
-  if (services.length === 0) return 'The system has no services'
+  if (services.length === 0) return 'The system has no service'
 
   const maxValue = services.reduce(
     (acc, { numberOfOperations }) =>

@@ -1,5 +1,5 @@
-export default function getServicesWithLessCoupling(services, calls) {
-  if (services.length === 0) return 'The system has no services'
+export default function servicesWithLessCoupling(services, calls) {
+  if (services.length === 0) return 'The system has no service'
 
   const servicesOperations = {}
 
@@ -21,5 +21,5 @@ export default function getServicesWithLessCoupling(services, calls) {
     .filter(([_, value]) => value === minValue)
     .map(([key, _]) => services.find((s) => s.id === parseInt(key)).name)
 
-  return lessServices.join(',')
+  return lessServices.join(', ')
 }

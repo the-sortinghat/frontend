@@ -1,5 +1,5 @@
 export default function servicesWithGreaterCoupling(services, calls) {
-  if (services.length === 0) return 'The system has no services'
+  if (services.length === 0) return 'The system has no service'
 
   const servicesOperations = {}
 
@@ -17,5 +17,5 @@ export default function servicesWithGreaterCoupling(services, calls) {
     .filter(([_, value]) => value === maxValue)
     .map(([key, _]) => services.find((s) => s.id === parseInt(key)).name)
 
-  return greaterServices.join(',')
+  return greaterServices.join(', ')
 }
