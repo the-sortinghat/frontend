@@ -1,11 +1,5 @@
 import { systemMetrics } from '../metrics/system'
-import {
-  getModules,
-  getRelashionshipsModuleDatabase,
-  getServiceCommunication,
-  getServices,
-  getSystems,
-} from '../services'
+import { getModules, getServiceCommunication, getSystems } from '../services'
 
 class SystemController {
   static async index(_, res) {
@@ -51,21 +45,7 @@ class SystemController {
   static async getMetrics(req, res) {
     const id = parseInt(req.params.id)
 
-    const allModules = await getModules()
-
-    const allServices = await getServices()
-
-    const relashionshipsModuleDatabase = await getRelashionshipsModuleDatabase()
-
-    const allLinks = await getServiceCommunication()
-
-    const metrics = systemMetrics(
-      id,
-      allModules,
-      allServices,
-      relashionshipsModuleDatabase,
-      allLinks
-    )
+    const metrics = await systemMetrics(id)
 
     return res.status(200).json(metrics)
   }
