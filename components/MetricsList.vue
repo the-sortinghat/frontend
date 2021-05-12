@@ -20,7 +20,7 @@
         {{ name }}
       </div>
 
-      <div>
+      <div style="max-width: 400px">
         {{ value }}
       </div>
     </div>

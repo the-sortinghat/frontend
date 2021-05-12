@@ -1,6 +1,7 @@
 import {
   getModules,
   getRelashionshipsModuleDatabase,
+  getRelashionshipsServiceDatabase,
   getServiceCommunication,
   getServices,
 } from '../../services'
@@ -10,6 +11,7 @@ import smallestServices from './smallest_services'
 import numberOfDatabases from './number_of_databases'
 import servicesWithGreaterCoupling from './services_greater_coupling'
 import servicesWithLessCoupling from './services_less_coupling'
+import databaseWithMostConnections from './database_most_connections'
 
 async function getData(systemId) {
   const allModules = await getModules()
@@ -17,6 +19,8 @@ async function getData(systemId) {
   const allServices = await getServices()
 
   const allRelashionshipsModuleDatabase = await getRelashionshipsModuleDatabase()
+
+  const allRelashionshipsServiceDatabase = await getRelashionshipsServiceDatabase()
 
   const allLinks = await getServiceCommunication()
 
@@ -36,15 +40,24 @@ async function getData(systemId) {
     (rel) => modules.find((module) => rel.moduleId === module.id)
   )
 
+  const relashionshipsServiceDatabase = allRelashionshipsServiceDatabase.filter(
+    (rel) => services.find((service) => rel.serviceId === service.id)
+  )
+
   return {
     modules,
     services,
     relashionshipsModuleDatabase,
+    relashionshipsServiceDatabase,
     links,
   }
 }
 
-function getNonMeasurableMetrics(services, links) {
+function getNonMeasurableMetrics(
+  services,
+  relashionshipsServiceDatabase,
+  links
+) {
   return [
     {
       name: 'largest service',
@@ -89,6 +102,20 @@ function getNonMeasurableMetrics(services, links) {
     {
       name: 'service with less total coupling',
       value: servicesWithLessCoupling(services, links),
+    },
+    {
+      name: 'database with most reading connections',
+      value: databaseWithMostConnections(
+        relashionshipsServiceDatabase,
+        'reading'
+      ),
+    },
+    {
+      name: 'database with most writing connections',
+      value: databaseWithMostConnections(
+        relashionshipsServiceDatabase,
+        'writing'
+      ),
     },
   ]
 }
@@ -162,11 +189,16 @@ export async function systemMetrics(systemId) {
     modules,
     services,
     relashionshipsModuleDatabase,
+    relashionshipsServiceDatabase,
     links,
   } = await getData(systemId)
 
   return {
-    nonMeasurable: getNonMeasurableMetrics(services, links),
+    nonMeasurable: getNonMeasurableMetrics(
+      services,
+      relashionshipsServiceDatabase,
+      links
+    ),
     measurable: getMeasurableMetrics(
       modules,
       services,
