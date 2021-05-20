@@ -1,11 +1,11 @@
-version: "3.7"
+version: '3.7'
 
 services:
   front:
     build: .
+    env_file:
+      - .env
     volumes:
-      - /usr/src/app/node_modules
       - ./:/usr/src/app
     ports:
       - 3000:3000
-

@@ -4,7 +4,26 @@ describe('getServiceData function', () => {
   let serviceData
 
   beforeAll(async () => {
-    serviceData = await getServiceData('1')
+    serviceData = await getServiceData('1', {
+      $get: jest
+        .fn()
+        .mockReturnValueOnce(
+          Promise.resolve({
+            name: undefined,
+            responsibility: undefined,
+            databases: [
+              { id: 1, model: '', role: '', namespace: '', access_type: '' },
+            ],
+            syncOperations: [{ id: 1, label: '' }],
+            asyncOperations: [{ label: '', publisherId: 1, subscriberId: 2 }],
+          })
+        )
+        .mockReturnValueOnce(
+          Promise.resolve([
+            { metric: '', measure: { min: 0, max: 1, value: 1 } },
+          ])
+        ),
+    })
   })
 
   it('returns a service data with essential properties', () => {
@@ -65,9 +84,9 @@ describe('getServiceData function', () => {
     serviceData.asyncOperations.forEach((operation) => {
       expect(operation).toEqual(
         expect.objectContaining({
-          id: expect.any(Number),
-          topic: expect.any(String),
-          broker: expect.any(String),
+          publisherId: expect.any(Number),
+          subscriberId: expect.any(Number),
+          label: expect.any(String),
         })
       )
     })

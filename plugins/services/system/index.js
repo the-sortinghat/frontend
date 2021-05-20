@@ -1,62 +1,34 @@
-function parseData(data) {
+/* eslint-disable no-console */
+function parseData(system, sysModules, metrics) {
   // parsing data into a valid object
+  const { name, description, nonFunctionalRequirements } = system
+  const modules = sysModules.modules.map(({ id, name }) => ({ id, name }))
+  const links = sysModules.links
 
   return {
-    name: 'InterSCity',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing.',
-    nonFunctionalRequirements: [
-      'Cloud-native',
-      'Interoperability',
-      'Adaptation',
-      'Evolvability',
-    ],
-    modules: [
-      {
-        id: 1,
-        name: 'Resource Discovery',
-      },
-      {
-        id: 2,
-        name: 'Data Collector',
-      },
-      {
-        id: 3,
-        name: 'Resource Catolog',
-      },
-      {
-        id: 4,
-        name: 'Actuator Controller',
-      },
-      {
-        id: 5,
-        name: 'Resource Adaptor',
-      },
-    ],
-    metrics: [
-      {
-        metric: 'services per module',
-        measure: { min: 0, max: 5, value: 1 },
-      },
-      {
-        metric: 'modules sharing DB',
-        measure: { min: 0, max: 8, value: 0 },
-      },
-      {
-        metric: 'synchronous coupling level',
-        measure: { min: 0, max: 10, value: 3 },
-      },
-      {
-        metric: 'asynchronous coupling level',
-        measure: { min: 0, max: 9, value: 6 },
-      },
-    ],
+    name,
+    description,
+    nonFunctionalRequirements,
+    modules,
+    links,
+    metrics,
   }
 }
 
-function getSystemData(systemId) {
-  // fetch from external source data
-  const parsedData = parseData({})
-  return new Promise((resolve) => resolve(parsedData))
+async function getSystemData(systemId, $axios) {
+  let systemData = {}
+
+  try {
+    const system = await $axios.$get(`/api/systems/${systemId}`)
+    const sysModules = await $axios.$get(`/api/systems/${systemId}/modules`)
+    const sysMetrics = await $axios.$get(`/api/systems/${systemId}/metrics`)
+    systemData = parseData(system, sysModules, sysMetrics)
+  } catch (err) {
+    console.log('error occuried while fetching from api...')
+    console.log(err.message)
+  }
+
+  return systemData
 }
 
 export default getSystemData

@@ -1,4 +1,8 @@
 export default {
+  env: {
+    sheetsAPIKey: process.env.sheetsAPIKey,
+    sheetID: process.env.sheetID,
+  },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'front',
@@ -22,6 +26,8 @@ export default {
     { src: '~/plugins/graph.js' },
   ],
 
+  serverMiddleware: [{ path: '/api', handler: '~/api/index.js' }],
+
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
@@ -34,7 +40,12 @@ export default {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [],
+  modules: ['@nuxtjs/axios'],
+
+  axios: {
+    proxy: true,
+    credentials: false,
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
