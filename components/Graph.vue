@@ -1,6 +1,6 @@
 <template>
   <div class="w-full h-full">
-    <svg class="w-full h-full border"></svg>
+    <svg class="w-full h-full border-b-1"></svg>
     <Subtitle :items="subtitles" />
   </div>
 </template>
@@ -47,8 +47,8 @@ export default {
   },
   mounted() {
     this.$generateGraph({
-      nodes: this.nodes,
-      links: this.links,
+      nodes: this.nodes.map((n) => ({ ...n })),
+      links: this.links.map((l) => ({ ...l })),
       width: this.$el.clientWidth,
       height: this.$el.clientHeight,
       container: this.$el.querySelector('svg'),

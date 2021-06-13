@@ -15,16 +15,7 @@
         </ul>
       </div>
     </div>
-    <div class="flex flex-col lg:flex-row lg:w-full lg:justify-between">
-      <div class="card">
-        <h2 class="text-lg">Modules:</h2>
-        <Graph :nodes="nodes" :links="links" :subtitles="subtitles" />
-      </div>
-      <div class="card">
-        <h2 class="text-lg">Metrics:</h2>
-        <MetricsList :metrics="metrics" />
-      </div>
-    </div>
+    <Tabs :graph-data="graphData" :metrics-data="metrics" />
   </div>
   <div v-else class="flex justify-center items-center w-full h-screen">
     <p>Loading...</p>
@@ -32,13 +23,11 @@
 </template>
 
 <script>
-import Graph from '@/components/Graph.vue'
-import MetricsList from '@/components/MetricsList.vue'
+import Tabs from '@/components/Tabs.vue'
 
 export default {
   components: {
-    Graph,
-    MetricsList,
+    Tabs,
   },
 
   data: () => ({
@@ -72,18 +61,6 @@ export default {
 
     metrics() {
       return this.sys.metrics
-    },
-
-    nodes() {
-      return this.graphData.nodes
-    },
-
-    links() {
-      return this.graphData.links
-    },
-
-    subtitles() {
-      return this.graphData.subtitles
     },
   },
 
