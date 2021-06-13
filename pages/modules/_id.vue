@@ -1,12 +1,7 @@
 <template>
-  <div v-if="moduleLoaded" class="flex flex-col">
-    <h1 class="text-xl font-bold">{{ module.name }} (Module)</h1>
-    <div class="flex flex-col lg:flex-row lg:w-1/2 lg:justify-between">
-      <div class="card">
-        <h2 class="text-lg">Responsibility:</h2>
-        <p>{{ module.responsibility }}</p>
-      </div>
-    </div>
+  <div v-if="moduleLoaded" class="flex flex-col p-5">
+    <h1 class="text-3xl">{{ module.name }} (Module)</h1>
+    <p class="my-3 text-justify">{{ module.responsibility }}</p>
     <Tabs :graph-data="graphData" :metrics-data="metrics" />
   </div>
   <div v-else class="flex justify-center items-center w-full h-screen">

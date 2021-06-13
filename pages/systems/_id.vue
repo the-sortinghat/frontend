@@ -1,20 +1,19 @@
 <template>
-  <div v-if="systemLoaded" class="flex flex-col">
-    <h1 class="text-xl font-bold">{{ system.name }} (System)</h1>
-    <div class="flex flex-col lg:flex-row lg:w-1/2 lg:justify-between">
-      <div class="card">
-        <h2 class="text-lg">Description:</h2>
-        <p>{{ system.description }}</p>
-      </div>
-      <div class="card">
-        <h2 class="text-lg">Non-Functional Requirements:</h2>
-        <ul>
-          <li v-for="nfr of system.nonFunctionalRequirements" :key="nfr">
-            {{ nfr }}
-          </li>
-        </ul>
+  <div v-if="systemLoaded" class="flex flex-col p-5">
+    <div class="flex justify-between">
+      <h1 class="text-3xl">{{ system.name }} (System)</h1>
+      <div class="flex">
+        <div
+          v-for="nfr in system.nonFunctionalRequirements"
+          :key="nfr"
+          class="m-1 p-2 rounded-3xl bg-purple-700 text-white text-sm"
+        >
+          {{ nfr }}
+        </div>
       </div>
     </div>
+    <p class="my-3 text-justify">{{ system.description }}</p>
+
     <Tabs :graph-data="graphData" :metrics-data="metrics" />
   </div>
   <div v-else class="flex justify-center items-center w-full h-screen">

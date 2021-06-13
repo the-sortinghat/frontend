@@ -21,7 +21,7 @@
     <div class="flex flex-1 mt-4">
       <Graph
         v-if="showGraph"
-        style="height: 700px"
+        style="height: 500px"
         :nodes="nodes"
         :links="links"
         :subtitles="subtitles"
