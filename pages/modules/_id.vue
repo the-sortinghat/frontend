@@ -1,19 +1,24 @@
 <template>
-  <div v-if="moduleLoaded" class="flex flex-col p-5">
-    <h1 class="text-3xl">{{ module.name }} (Module)</h1>
-    <p class="my-3 text-justify">{{ module.responsibility }}</p>
-    <Tabs :graph-data="graphData" :metrics-data="metrics" />
-  </div>
-  <div v-else class="flex justify-center items-center w-full h-screen">
-    <p>Loading...</p>
+  <div class="bg-gray-50">
+    <Navbar />
+    <div v-if="moduleLoaded" class="flex flex-col p-5">
+      <h1 class="text-3xl">{{ module.name }} (Module)</h1>
+      <p class="my-3 text-justify">{{ module.responsibility }}</p>
+      <Tabs :graph-data="graphData" :metrics-data="metrics" />
+    </div>
+    <div v-else class="flex justify-center items-center w-full h-screen">
+      <p>Loading...</p>
+    </div>
   </div>
 </template>
 
 <script>
+import Navbar from '@/components/Navbar.vue'
 import Tabs from '@/components/Tabs.vue'
 
 export default {
   components: {
+    Navbar,
     Tabs,
   },
   data: () => ({

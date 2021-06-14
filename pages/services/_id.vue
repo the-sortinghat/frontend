@@ -1,40 +1,40 @@
 <template>
-  <div v-if="serviceLoaded" class="flex flex-col">
-    <h1 class="text-xl font-bold">{{ service.name }} (Service)</h1>
-    <div class="flex flex-col lg:flex-row lg:w-1/2 lg:justify-between">
-      <div class="card">
-        <h2 class="text-lg">Responsibility:</h2>
-        <p>{{ service.responsibility }}</p>
+  <div>
+    <Navbar />
+    <div v-if="serviceLoaded" class="flex flex-col p-5">
+      <h1 class="text-3xl">{{ service.name }} (Service)</h1>
+      <p class="my-3 text-justify">{{ service.responsibility }}</p>
+      <div class="flex flex-col lg:flex-row lg:w-full lg:justify-between">
+        <div class="card">
+          <Table
+            v-for="{ title, columns, data } in tables"
+            :key="title"
+            :title="title"
+            :columns="columns"
+            :data="data"
+            class="mt-5"
+          />
+        </div>
+        <div class="card">
+          <h2 class="text-lg">Metrics:</h2>
+          <MetricsList :metrics="metrics" />
+        </div>
       </div>
     </div>
-    <div class="flex flex-col lg:flex-row lg:w-full lg:justify-between">
-      <div class="card">
-        <Table
-          v-for="{ title, columns, data } in tables"
-          :key="title"
-          :title="title"
-          :columns="columns"
-          :data="data"
-          class="mt-5"
-        />
-      </div>
-      <div class="card">
-        <h2 class="text-lg">Metrics:</h2>
-        <MetricsList :metrics="metrics" />
-      </div>
+    <div v-else class="flex justify-center items-center w-full h-screen">
+      <p>Loading...</p>
     </div>
-  </div>
-  <div v-else class="flex justify-center items-center w-full h-screen">
-    <p>Loading...</p>
   </div>
 </template>
 
 <script>
+import Navbar from '@/components/Navbar.vue'
 import Table from '@/components/Table.vue'
 import MetricsList from '@/components/MetricsList.vue'
 
 export default {
   components: {
+    Navbar,
     Table,
     MetricsList,
   },
