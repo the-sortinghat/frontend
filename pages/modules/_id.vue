@@ -1,36 +1,25 @@
 <template>
-  <div v-if="moduleLoaded" class="flex flex-col">
-    <h1 class="text-xl font-bold">{{ module.name }} (Module)</h1>
-    <div class="flex flex-col lg:flex-row lg:w-1/2 lg:justify-between">
-      <div class="card">
-        <h2 class="text-lg">Responsibility:</h2>
-        <p>{{ module.responsibility }}</p>
-      </div>
+  <div class="bg-gray-50">
+    <Navbar />
+    <div v-if="moduleLoaded" class="flex flex-col p-5">
+      <h1 class="text-3xl">{{ module.name }} (Module)</h1>
+      <p class="my-3 text-justify">{{ module.responsibility }}</p>
+      <Tabs :graph-data="graphData" :metrics-data="metrics" />
     </div>
-    <div class="flex flex-col lg:flex-row lg:w-full lg:justify-between">
-      <div class="card">
-        <h2 class="text-lg">Services:</h2>
-        <Graph :nodes="nodes" :links="links" :subtitles="subtitles" />
-      </div>
-      <div class="card">
-        <h2 class="text-lg">Metrics:</h2>
-        <MetricsList :metrics="metrics" />
-      </div>
+    <div v-else class="flex justify-center items-center w-full h-screen">
+      <p>Loading...</p>
     </div>
-  </div>
-  <div v-else class="flex justify-center items-center w-full h-screen">
-    <p>Loading...</p>
   </div>
 </template>
 
 <script>
-import Graph from '@/components/Graph.vue'
-import MetricsList from '@/components/MetricsList.vue'
+import Navbar from '@/components/Navbar.vue'
+import Tabs from '@/components/Tabs.vue'
 
 export default {
   components: {
-    Graph,
-    MetricsList,
+    Navbar,
+    Tabs,
   },
   data: () => ({
     module: undefined,
@@ -59,15 +48,6 @@ export default {
     },
     metrics() {
       return this.module.metrics
-    },
-    nodes() {
-      return this.graphData.nodes
-    },
-    links() {
-      return this.graphData.links
-    },
-    subtitles() {
-      return this.graphData.subtitles
     },
   },
   async created() {

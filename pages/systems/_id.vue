@@ -1,44 +1,37 @@
 <template>
-  <div v-if="systemLoaded" class="flex flex-col">
-    <h1 class="text-xl font-bold">{{ system.name }} (System)</h1>
-    <div class="flex flex-col lg:flex-row lg:w-1/2 lg:justify-between">
-      <div class="card">
-        <h2 class="text-lg">Description:</h2>
-        <p>{{ system.description }}</p>
-      </div>
-      <div class="card">
-        <h2 class="text-lg">Non-Functional Requirements:</h2>
-        <ul>
-          <li v-for="nfr of system.nonFunctionalRequirements" :key="nfr">
+  <div class="bg-gray-50">
+    <Navbar />
+    <div v-if="systemLoaded" class="flex flex-col p-5">
+      <div class="flex justify-between">
+        <h1 class="text-3xl">{{ system.name }} (System)</h1>
+        <div class="flex">
+          <div
+            v-for="nfr in system.nonFunctionalRequirements"
+            :key="nfr"
+            class="m-1 p-2 rounded-3xl bg-purple-700 text-white text-sm"
+          >
             {{ nfr }}
-          </li>
-        </ul>
+          </div>
+        </div>
       </div>
+      <p class="my-3 text-justify">{{ system.description }}</p>
+
+      <Tabs :graph-data="graphData" :metrics-data="metrics" />
     </div>
-    <div class="flex flex-col lg:flex-row lg:w-full lg:justify-between">
-      <div class="card">
-        <h2 class="text-lg">Modules:</h2>
-        <Graph :nodes="nodes" :links="links" :subtitles="subtitles" />
-      </div>
-      <div class="card">
-        <h2 class="text-lg">Metrics:</h2>
-        <MetricsList :metrics="metrics" />
-      </div>
+    <div v-else class="flex justify-center items-center w-full h-screen">
+      <p>Loading...</p>
     </div>
-  </div>
-  <div v-else class="flex justify-center items-center w-full h-screen">
-    <p>Loading...</p>
   </div>
 </template>
 
 <script>
-import Graph from '@/components/Graph.vue'
-import MetricsList from '@/components/MetricsList.vue'
+import Navbar from '@/components/Navbar.vue'
+import Tabs from '@/components/Tabs.vue'
 
 export default {
   components: {
-    Graph,
-    MetricsList,
+    Navbar,
+    Tabs,
   },
 
   data: () => ({
@@ -72,18 +65,6 @@ export default {
 
     metrics() {
       return this.sys.metrics
-    },
-
-    nodes() {
-      return this.graphData.nodes
-    },
-
-    links() {
-      return this.graphData.links
-    },
-
-    subtitles() {
-      return this.graphData.subtitles
     },
   },
 
