@@ -1,3 +1,24 @@
+const getMaxNumberOfServices = (modules) =>
+  modules.reduce(
+    (acc, { numberOfServices }) =>
+      numberOfServices > acc ? numberOfServices : acc,
+    0
+  )
+
+const getMaxNumberOfDatabases = (modules) =>
+  modules.reduce(
+    (acc, { numberOfDatabases }) =>
+      numberOfDatabases > acc ? numberOfDatabases : acc,
+    0
+  )
+
+const getMaxNumberOfOperations = (modules) =>
+  modules.reduce(
+    (acc, { numberOfOperations }) =>
+      numberOfOperations > acc ? numberOfOperations : acc,
+    0
+  )
+
 export function moduleMetrics(modules, id) {
   const {
     numberOfServices,
@@ -6,20 +27,32 @@ export function moduleMetrics(modules, id) {
   } = modules.find((mod) => mod.id === id)
 
   return {
-    nonMeasurable: [
+    nonMeasurable: [],
+    measurable: [
       {
         name: 'Number of Services',
-        value: numberOfServices,
+        measure: {
+          min: 0,
+          max: getMaxNumberOfServices(modules),
+          value: numberOfServices,
+        },
       },
       {
         name: 'Number of Databases',
-        value: numberOfDatabases,
+        measure: {
+          min: 0,
+          max: getMaxNumberOfDatabases(modules),
+          value: numberOfDatabases,
+        },
       },
       {
         name: 'Number of Operations',
-        value: numberOfOperations,
+        measure: {
+          min: 0,
+          max: getMaxNumberOfOperations(modules),
+          value: numberOfOperations,
+        },
       },
     ],
-    measurable: [],
   }
 }
