@@ -54,11 +54,24 @@ async function getData(systemId) {
 }
 
 function getNonMeasurableMetrics(
+  modules,
   services,
   relashionshipsServiceDatabase,
   links
 ) {
   return [
+    {
+      name: 'number of modules',
+      value: `${modules.length} modules`,
+    },
+    {
+      name: 'number of services',
+      value: `${services.length} services`,
+    },
+    {
+      name: 'number of databases',
+      value: `${numberOfDatabases(modules)} databases`,
+    },
     {
       name: 'largest service',
       value: largestServices(services),
@@ -120,12 +133,7 @@ function getNonMeasurableMetrics(
   ]
 }
 
-function getMeasurableMetrics(
-  modules,
-  services,
-  relashionshipsModuleDatabase,
-  links
-) {
+function getMeasurableMetrics(modules, relashionshipsModuleDatabase, links) {
   const numberOfSyncOps = links.reduce(
     (acc, { type }) => (type === 'sync' ? acc + 1 : acc),
     0
@@ -134,34 +142,10 @@ function getMeasurableMetrics(
 
   return [
     {
-      name: 'number of modules',
-      measure: {
-        min: 0,
-        max: 10, // fake max for a while (we have only one system yet)
-        value: modules.length,
-      },
-    },
-    {
-      name: 'number of services',
-      measure: {
-        min: 0,
-        max: 10, // fake max for a while (we have only one system yet)
-        value: services.length,
-      },
-    },
-    {
-      name: 'number of databases',
-      measure: {
-        min: 0,
-        max: 15, // fake max for a while (we have only one system yet)
-        value: numberOfDatabases(modules),
-      },
-    },
-    {
       name: 'modules sharing DB',
       measure: {
         min: 0,
-        max: 8, // fake max for a while (we have only one system yet)
+        max: modules.length,
         value: modulesSharingDatabases(relashionshipsModuleDatabase),
       },
     },
@@ -195,13 +179,13 @@ export async function systemMetrics(systemId) {
 
   return {
     nonMeasurable: getNonMeasurableMetrics(
+      modules,
       services,
       relashionshipsServiceDatabase,
       links
     ),
     measurable: getMeasurableMetrics(
       modules,
-      services,
       relashionshipsModuleDatabase,
       links
     ),
